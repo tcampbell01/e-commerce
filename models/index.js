@@ -6,7 +6,7 @@ const ProductTag = require('./ProductTag');
 
 // Products belongsTo Category
 
-Product.hasOne(Category, {
+Product.belongsTo(Category, {
   foreignKey: 'category_id'
 });
 
