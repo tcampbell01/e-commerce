@@ -9,21 +9,21 @@ const { Category, Product } = require('../../models');
 router.get('/', (req, res) => {
 
   Category.findAll({
-    include: [
+    include: 
       {
         model: Product,
         attributes: ['product_name']
       },
     
      
-    ]
+    
   })
 
   .then(categoryData => res.json(categoryData))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
-  })
+  });
   
 });
 
@@ -35,23 +35,20 @@ router.get('/:id',  (req, res) => {
       where: {
         id: req.params.id
       }, 
-      include: [
+      include: 
         {
           model: Product,
           attributes: ['category_id']
         }
-      ]
+      
     })
-    .then(categoryData => {
-    if (!categoryData) {
-      res.status(404).json({message: 'No category with that id!'});
-      return;
-    }
-    res.json(categoryData);
-  })
-   .catch (err => {
-    res.status(500).json(err);
-  });
+    .then(categoryData => res.json(categoryData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+  
+   
   
 });
 
@@ -81,13 +78,14 @@ router.put('/:id', (req, res) => {
   }
 })
 .then(categoryData => {
-  if (!categoryData[0]) {
+  if (!categoryData) {
     res.status(404).json({message: 'No category with that id!'});
     return;
   }
   res.json(categoryData);
 })
  .catch (err => {
+   console.log(err);
   res.status(500).json(err);
 });
 
@@ -109,6 +107,7 @@ router.delete('/:id', (req, res) => {
       res.json(categoryData);
     })
     .catch (err => {
+      console.log(err);
       res.status(500).json(err);
     });
 });

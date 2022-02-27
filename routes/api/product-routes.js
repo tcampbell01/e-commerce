@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
         },
         {
           model: Tag,
-          attributes: ['id', 'tag_name']
+          attributes: ['tag_name']
         }
       ]
     })
@@ -33,7 +33,7 @@ router.get('/', (req, res) => {
  // find a single product by its `id`
   // be sure to include its associated Category and Tag data
 router.get('/:id', (req, res) => {
-    product.findOne({
+    Product.findOne({
       where: {
         id: req.params.id
       },
@@ -45,18 +45,14 @@ router.get('/:id', (req, res) => {
         },
         {
           model: Tag,
-          attributes: ['id', 'tag_name']
+          attributes: ['tag_name']
         }
       ]
     })
-    .then(productData => {
-      if (!productData) {
-        res.status(404).json({message: 'No product with that id'})
-        return;
-      }
-      res.json(productData);
-    })
+    .then(productData => res.json(productData))
+    
     .catch(err => {
+      console.log(err);
       res.status(500).json(err);
     });
 });
@@ -65,6 +61,14 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
 
+   /* req.body should look like this...
+    {
+      product_name: "Basketball",
+      price: 200.00,
+      stock: 3,
+      tagIds: [1, 2, 3, 4]
+    }
+  */
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
@@ -144,6 +148,7 @@ router.delete('/:id', (req, res) => {
     res.json(productData);
   })
   .catch (err => {
+    console.log(err);
     res.status(500).json(err);
   });
 });

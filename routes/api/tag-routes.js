@@ -40,15 +40,10 @@ router.get('/:id', (req, res) => {
     
     
   })
-  .then(tagData => {
-    if (!tagData) {
-      res.status(404).json({message: 'No tag with that with that id!'});
-      return;
-
-    }
-    res.json(tagData);
-  })
+  .then(tagData => res.json(tagData))
+    
   .catch(err => {
+    console.log(err);
     res.status(500).json(err);
   });
 });
@@ -82,6 +77,7 @@ router.put('/:id', (req, res) => {
       res.json(tagData);
     })
   .catch (err => {
+    console.log(err);
     res.status(500).json(err);
   });
 });
@@ -100,6 +96,7 @@ router.delete('/:id', (req, res) => {
     res.json(tagData);
   })
   .catch(err => {
+    console.log(err);
     res.status(500).json(err);
   });
 });
